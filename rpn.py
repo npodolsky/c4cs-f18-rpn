@@ -6,36 +6,52 @@ op = {
         '+': operator.add,
         '-': operator.sub,
         '*': operator.mul,
-        '/': operator.floordiv,
-        '^': operator.pow
+        '/': operator.truediv,
+        '^': operator.pow,
+        '//': operator.floordiv
 }
 
 def calculate(arg):
     # stack for calculator
-    stack = arg.split()
+    stack = list()
 
     # process tokens
-    while len(stack) > 1:
-        token = stack.pop()
+    for token in arg.split():
         try:
             value = int(token)
             stack.append(value)
         except ValueError:
-            val2 = int(stack.pop())
-            val1 = int(stack.pop())
+            if token == 's':
+                result = 0
+                while stack:
+                    val = stack.pop()
+                    result = result + val
+            else:
+                val2 = stack.pop()
+                val1 = stack.pop()
             
-            # Look up function in table
-            func = op[token]
-            result = func(val1, val2)
+                if token =='%':
+                    val2 = val2 / 100
+                    result = val2 * val1
+                elif token == '/' and val2 == 0:
+                    print("Error: Cannot divide by 0")
+                    result = val1
+                else:
+                    # Look up function in table
+                    func = op[token]
+                    result = func(val1, val2)
                 
-            stack.append(str(result))
+            stack.append(result)
+    
+    if len(stack) != 1:
+        raise TypeError("Too many parameters")
 
-    return int(stack[0])
+    return stack.pop()
 
 def main():
     while True:
         result = calculate(input('rpn calc> '))
-        print(result)
+        print("Result: ", result)
 
 if __name__ == '__main__':
     main()
