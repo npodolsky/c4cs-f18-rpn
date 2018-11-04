@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import operator
+import math
 
 
 op = {
@@ -26,6 +27,9 @@ def calculate(arg):
                 while stack:
                     val = stack.pop()
                     result = result + val
+            elif token == '!':
+                val = stack.pop()
+                result = math.factorial(val)
             else:
                 val2 = stack.pop()
                 val1 = stack.pop()

@@ -37,3 +37,7 @@ class TestBasics(unittest.TestCase):
     def test_summation(self):
         result = rpn.calculate('2 3 4 5 s')
         self.assertEqual(14, result)
+
+    def test_factorial(self):
+        result = rpn.calculate ('2 2 + !')
+        self.assertEqual(24, result)
